@@ -190,7 +190,7 @@ wget -O sing.zip "https://github.com/SagerNet/sing-box/archive/refs/tags/$sversi
 unzip sing.zip
 cd ./sing-box-${sversion#v}
 # TAGS="with_gvisor,with_quic,with_dhcp,with_wireguard,with_ech,with_utls,with_reality_server,with_acme,with_clash_api,with_v2ray_api,with_grpc" make
-go build -v -trimpath -ldflags "-X github.com/sagernet/sing-box/constant.Version=${sversion#v} -s -w -buildid=" -tags with_gvisor,with_dhcp,with_wireguard,with_reality_server,with_clash_api,with_quic,with_utls,with_ech ./cmd/sing-box
+go build -v -trimpath -ldflags "-X github.com/sagernet/sing-box/constant.Version=${sversion#v} -s -w -buildid=" -tags with_gvisor,with_dhcp,with_wireguard,with_reality_server,with_clash_api,with_quic,with_utls,with_ech,with_v2ray_api,with_grpc ./cmd/sing-box
 chmod +x ./sing-box
 mv sing-box /opt/marznode/$node_directory/sing-box/$node_directory-box
 cd ..
