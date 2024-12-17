@@ -203,7 +203,7 @@ print_success "Success! sing-box installed"
 cd /opt/marznode/$node_directory/hysteria
 arch=$(hys_architecture)
 wget -O $node_directory-teria "https://github.com/apernet/hysteria/releases/download/app/v$hversion/hysteria-linux-$arch"
-
+chmod +x ./$node_directory-teria
 
 # Get enable status for each component
 print_info "Do you want to enable xray (y/n)"
@@ -234,8 +234,8 @@ XRAY_ASSETS_PATH=/opt/marznode/$node_directory/xray
 
 #XRAY_CONFIG_PATH=/etc/xray/xray_config.json
 #XRAY_VLESS_REALITY_FLOW=xtls-rprx-vision
-XRAY_RESTART_ON_FAILURE=True
-XRAY_RESTART_ON_FAILURE_INTERVAL=5
+#XRAY_RESTART_ON_FAILURE=True
+#XRAY_RESTART_ON_FAILURE_INTERVAL=5
 
 HYSTERIA_ENABLED=$hys_enable
 HYSTERIA_EXECUTABLE_PATH=/opt/marznode/$node_directory/hysteria/$node_directory-teria
@@ -244,8 +244,8 @@ HYSTERIA_EXECUTABLE_PATH=/opt/marznode/$node_directory/hysteria/$node_directory-
 SING_BOX_ENABLED=$sing_enable
 SING_BOX_EXECUTABLE_PATH=/opt/marznode/$node_directory/sing-box/$node_directory-box
 SING_BOX_CONFIG_PATH=/opt/marznode/$node_directory/sing-box/config.json
-SING_BOX_RESTART_ON_FAILURE=True
-SING_BOX_RESTART_ON_FAILURE_INTERVAL=5
+#SING_BOX_RESTART_ON_FAILURE=True
+#SING_BOX_RESTART_ON_FAILURE_INTERVAL=5
 
 SSL_KEY_FILE=./server.key
 SSL_CERT_FILE=./server.cert
