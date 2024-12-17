@@ -36,8 +36,8 @@ bash <(curl -Ls https://raw.githubusercontent.com/mikeesierrah/ez-node/main/marz
                 ├── sing-box
                 │    └── sing-box core
                 ├── xray
-                │    └── xray core
-                │    ├── xray assets
+                │    ├── xray core
+                │    └── xray assets
                 └── hysteria
                     └── hysteria core
 ```
