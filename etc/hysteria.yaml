@@ -1,5 +1,10 @@
 listen: 127.0.0.1:6291
 
+acme:
+  domains:
+    - your.domain.net 
+  email: your@email.com
+
 auth:
   type: password
   password: password
