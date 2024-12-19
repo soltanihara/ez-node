@@ -188,6 +188,7 @@ print_success "Success! xray installed"
 # bulding sing-box
 cd /opt/marznode/$node_directory/sing-box
 wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/sing-box.json"
+echo $sversion
 wget -O sing.zip "https://github.com/SagerNet/sing-box/archive/refs/tags/v${sversion#v}.zip"
 unzip sing.zip
 cd ./sing-box-${sversion#v}
