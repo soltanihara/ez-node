@@ -1,0 +1,17 @@
+listen: 127.0.0.1:6291
+
+auth:
+  type: password
+  password: password
+
+masquerade:
+  type: proxy
+  proxy:
+    url: https://www.speedtest.net
+    rewriteHost: true
+
+resolver:
+  type: udp
+  udp:
+    addr: 1.1.1.2:53
+    timeout: 10s

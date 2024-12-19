@@ -201,6 +201,7 @@ print_success "Success! sing-box installed"
 
 # Fetching hysteria core and setting it up
 cd /opt/marznode/$node_directory/hysteria
+wget -O config.yaml "https://github.com/mikeesierrah/ez-node/etc/hysteria.yaml"
 arch=$(hys_architecture)
 wget -O $node_directory-teria "https://github.com/apernet/hysteria/releases/download/app/v$hversion/hysteria-linux-$arch"
 chmod +x ./$node_directory-teria
@@ -239,7 +240,7 @@ XRAY_ASSETS_PATH=/opt/marznode/$node_directory/xray
 
 HYSTERIA_ENABLED=$hys_enable
 HYSTERIA_EXECUTABLE_PATH=/opt/marznode/$node_directory/hysteria/$node_directory-teria
-#HYSTERIA_CONFIG_PATH=/etc/hysteria/config.yaml
+HYSTERIA_CONFIG_PATH=/opt/marznode/$node_directory/hysteria/hysteria.yaml
 
 SING_BOX_ENABLED=$sing_enable
 SING_BOX_EXECUTABLE_PATH=/opt/marznode/$node_directory/sing-box/$node_directory-box
