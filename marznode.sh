@@ -240,7 +240,7 @@ XRAY_ASSETS_PATH=/opt/marznode/$node_directory/xray
 
 HYSTERIA_ENABLED=$hys_enable
 HYSTERIA_EXECUTABLE_PATH=/opt/marznode/$node_directory/hysteria/$node_directory-teria
-HYSTERIA_CONFIG_PATH=/opt/marznode/$node_directory/hysteria/hysteria.yaml
+HYSTERIA_CONFIG_PATH=/opt/marznode/$node_directory/hysteria/config.yaml
 
 SING_BOX_ENABLED=$sing_enable
 SING_BOX_EXECUTABLE_PATH=/opt/marznode/$node_directory/sing-box/$node_directory-box
