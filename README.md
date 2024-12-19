@@ -1,3 +1,7 @@
+# NOTICE
+
+This is script is under developement so issues and problems are common - if you had any problems kindly issue it
+
 # Easy Node
 
 This script sets up nodes for the Marzneshin and Marzban panels.
