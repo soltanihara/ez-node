@@ -1,0 +1,38 @@
+{
+    "log": {
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "ip": [
+            "geoip:private"
+          ],
+          "outboundTag": "BLOCK",
+          "type": "field"
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "tag": "Shadowsocks",
+        "listen": "127.0.0.1",
+        "port": 6292,
+        "protocol": "shadowsocks",
+        "settings": {
+          "clients": [],
+          "network": "tcp,udp"
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "tag": "DIRECT"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "BLOCK"
+      }
+    ]
+  }
