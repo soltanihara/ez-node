@@ -165,7 +165,7 @@ hversion=${hversion#app/v}
 arch=$(x_architecture)
 cd "/opt/marznode/$node_directory/xray"
 
-wget -O config.json "https://github.com/mikeesierrah/ez-node/blob/main/etc/xray.json"
+wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/xray.json"
 
 print_info "Fetching Xray core version $xversion..."
 
@@ -187,7 +187,7 @@ print_success "Success! xray installed"
 
 # bulding sing-box
 cd /opt/marznode/$node_directory/sing-box
-wget -O config.json "https://github.com/mikeesierrah/ez-node/blob/main/etc/sing-box.json"
+wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/sing-box.json"
 wget -O sing.zip "https://github.com/SagerNet/sing-box/archive/refs/tags/$sversion.zip"
 unzip sing.zip
 cd ./sing-box-${sversion#v}
@@ -203,7 +203,7 @@ print_success "Success! sing-box installed"
 
 # Fetching hysteria core and setting it up
 cd /opt/marznode/$node_directory/hysteria
-wget -O config.yaml "https://github.com/mikeesierrah/ez-node/blob/main/etc/hysteria.yaml"
+wget -O config.yaml "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/hysteria.yaml"
 arch=$(hys_architecture)
 wget -O $node_directory-teria "https://github.com/apernet/hysteria/releases/download/app/v$hversion/hysteria-linux-$arch"
 chmod +x ./$node_directory-teria
