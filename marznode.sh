@@ -76,19 +76,7 @@ hys_architecture() {
 print_info "Installing necessary packages..."
 print_info "DON'T PANIC IF IT LOOKS STUCK!"
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install curl socat git wget unzip make -y
-
-# Go installation
-print_info "Installing or updating to the latest version of Go..."
-bash <(curl -sL https://git.io/go-installer)
-source /root/.bashrc
-
-if ! command -v go &> /dev/null; then
-    print_error "Go was not found after installation. Please install GO."
-    exit 1
-else
-    print_info "Go is successfully installed and ready to use."
-fi
+sudo apt-get install curl socat git wget unzip make golang -y
 
 # Docker installation
 if ! command -v docker &> /dev/null; then
