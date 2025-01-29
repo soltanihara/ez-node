@@ -35,7 +35,7 @@ if ! command -v docker &> /dev/null; then
     curl -fsSL https://get.docker.com | sh || { print_error "Something went wrong! Did you interrupt the Docker update? If so, no problem. Are you trying to install Docker on an IR server? Try setting DNS."; }
     trap - SIGINT
     clear
-
+fi
 print_info "Checking if Docker is installed..."
 if ! command -v docker &> /dev/null; then
   print_error "Docker could not be found, please install Docker."
