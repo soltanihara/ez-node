@@ -128,7 +128,7 @@ while IFS= read -r line; do
   cert+="$line\n"
 done
 
-echo -e "$cert" | sudo tee /opt/marzban-node/$panel.pem > /dev/null
+echo -e "$cert" | sudo tee /opt/marzban-node/$panel/$panel.pem > /dev/null
 
 
 
@@ -162,8 +162,10 @@ DOCKER="/opt/marzban-node/$panel/docker-compose.yml"
 cat << EOF > "$ENV"
 SERVICE_PORT=$service
 XRAY_API_PORT=$api
-XRAY_EXECUTABLE_PATH=/opt/marzban-node/$panel-core
-SSL_CLIENT_CERT_FILE=/opt/marzban-node/$panel.pem
+SSL_CERT_FILE = /opt/marzban-node/$panel/ssl_cert.pem
+SSL_KEY_FILE = /opt/marzban-node/$panel/ssl_key.pem
+XRAY_EXECUTABLE_PATH=/opt/marzban-node/$panel/$panel-core
+SSL_CLIENT_CERT_FILE=/opt/marzban-node/$panel/$panel.pem
 SERVICE_PROTOCOL=rest
 EOF
 
