@@ -75,7 +75,7 @@ hys_architecture() {
 # Installing necessary packages
 print_info "Installing necessary packages..."
 print_info "DON'T PANIC IF IT LOOKS STUCK!"
-sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get update
 sudo apt-get install curl socat git wget unzip make golang -y
 
 # Docker installation
