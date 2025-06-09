@@ -72,6 +72,66 @@ hys_architecture() {
     esac
 }
 
+
+# Update Xray core for an existing node
+update_xray() {
+    print_info "Enter the node directory name:" && read -r node_directory
+    if [ ! -d "/opt/marznode/$node_directory/xray" ]; then
+        print_error "Node directory not found: /opt/marznode/$node_directory"
+        return 1
+    fi
+    print_info "Which version of Xray-core do you want? (e.g., 1.8.24) (leave blank for latest): "
+    read -r version
+    version=${version:-latest}
+    arch=$(x_architecture)
+    cd "/opt/marznode/$node_directory/xray" || return 1
+
+    backup="/tmp/${node_directory}_config.json.bak"
+    [ -f config.json ] && cp config.json "$backup"
+
+    if [[ $version == "latest" ]]; then
+        wget -O xray.zip "https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-$arch.zip"
+    else
+        wget -O xray.zip "https://github.com/XTLS/Xray-core/releases/download/v$version/Xray-linux-$arch.zip"
+    fi
+    if unzip -o xray.zip; then
+        rm xray.zip
+        mv -v xray "$node_directory-core"
+        [ -f "$backup" ] && mv "$backup" config.json
+        print_success "Xray core updated to $version"
+        docker compose -f "/opt/marznode/$node_directory/docker-compose.yml" restart -t 0
+    else
+        print_error "Failed to update Xray core."
+        [ -f "$backup" ] && mv "$backup" config.json
+    fi
+}
+
+# Remove an existing node completely
+remove_node() {
+    print_info "Enter the node directory name to remove:" && read -r node_directory
+    if [ -d "/opt/marznode/$node_directory" ]; then
+        docker compose -f "/opt/marznode/$node_directory/docker-compose.yml" down -t 0
+        rm -rf "/opt/marznode/$node_directory"
+        print_success "Node $node_directory removed."
+    else
+        print_error "Directory not found: /opt/marznode/$node_directory"
+    fi
+}
+
+# Select desired action
+print_info "Select an action:" && \
+echo "1) Install new node" && \
+echo "2) Update/downgrade Xray version of an existing node" && \
+echo "3) Remove a node" && \
+read -rp "Enter choice [1-3]: " action
+
+case "$action" in
+    1) print_info "Proceeding with new node installation." ;;
+    2) update_xray; exit ;;
+    3) remove_node; exit ;;
+    *) print_error "Invalid choice"; exit 1 ;;
+esac
+
 # Installing necessary packages
 print_info "Installing necessary packages..."
 print_info "DON'T PANIC IF IT LOOKS STUCK!"
@@ -136,24 +196,30 @@ print_info "Which version of xray core do you want? (e.g., 1.8.24) (leave blank 
 read -r version
 xversion=${version:-latest}
 
-# sing box
-print_info "Which version of sing-box core do you want? (e.g., 1.10.3) (leave blank for latest): "
-read -r version
-latest=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name"' | cut -d '"' -f 4)
-sversion=${version:-$latest}
+print_info "Do you want to download and install sing-box? (y/n)"
+read -r install_sing
+if [[ "$install_sing" =~ ^[Yy]$ ]]; then
+    print_info "Which version of sing-box core do you want? (e.g., 1.10.3) (leave blank for latest): "
+    read -r version
+    latest=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name"' | cut -d '"' -f 4)
+    sversion=${version:-$latest}
+fi
 
-# hysteria
-print_info "Which version of hysteria core do you want? (e.g., 2.6.0) (leave blank for latest): "
-read -r version
-latest=$(curl -s https://api.github.com/repos/apernet/hysteria/releases/latest | grep '"tag_name"' | cut -d '"' -f 4)
-hversion=${version:-$latest}
-hversion=${hversion#app/v}
+print_info "Do you want to download and install Hysteria? (y/n)"
+read -r install_hys
+if [[ "$install_hys" =~ ^[Yy]$ ]]; then
+    print_info "Which version of hysteria core do you want? (e.g., 2.6.0) (leave blank for latest): "
+    read -r version
+    latest=$(curl -s https://api.github.com/repos/apernet/hysteria/releases/latest | grep '"tag_name"' | cut -d '"' -f 4)
+    hversion=${version:-$latest}
+    hversion=${hversion#app/v}
+fi
 
 # Fetching xray core and setting it up
 arch=$(x_architecture)
 cd "/opt/marznode/$node_directory/xray"
 
-wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/xray.json"
+wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/main/etc/xray.json"
 
 print_info "Fetching Xray core version $xversion..."
 
@@ -173,9 +239,10 @@ fi
 
 print_success "Success! xray installed"
 
+if [[ "$install_sing" =~ ^[Yy]$ ]]; then
 # bulding sing-box
 cd /opt/marznode/$node_directory/sing-box
-wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/sing-box.json"
+wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/main/etc/sing-box.json"
 echo $sversion
 wget -O sing.zip "https://github.com/SagerNet/sing-box/archive/refs/tags/v${sversion#v}.zip"
 unzip sing.zip
@@ -188,27 +255,40 @@ cd ..
 rm sing.zip
 rm -rf ./sing-box-${sversion#v}
 
-print_success "Success! sing-box installed"
+    print_success "Success! sing-box installed"
+fi
 
+if [[ "$install_hys" =~ ^[Yy]$ ]]; then
 # Fetching hysteria core and setting it up
 cd /opt/marznode/$node_directory/hysteria
-wget -O config.yaml "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/hysteria.yaml"
+wget -O config.yaml "https://raw.githubusercontent.com/mikeesierrah/ez-node/main/etc/hysteria.yaml"
 arch=$(hys_architecture)
 wget -O $node_directory-teria "https://github.com/apernet/hysteria/releases/download/app/v$hversion/hysteria-linux-$arch"
 chmod +x ./$node_directory-teria
+    print_success "Success! hysteria installed"
+fi
 
 # Get enable status for each component
 print_info "Do you want to enable xray (y/n)"
 read -r answer
 x_enable=$( [[ "$answer" =~ ^[Yy]$ ]] && echo "True" || echo "False" )
 
-print_info "Do you want to enable sing-box (y/n)"
-read -r answer
-sing_enable=$( [[ "$answer" =~ ^[Yy]$ ]] && echo "True" || echo "False" )
 
-print_info "Do you want to enable hysteria (y/n)"
-read -r answer
-hys_enable=$( [[ "$answer" =~ ^[Yy]$ ]] && echo "True" || echo "False" )
+if [[ "$install_sing" =~ ^[Yy]$ ]]; then
+    print_info "Do you want to enable sing-box (y/n)"
+    read -r answer
+    sing_enable=$( [[ "$answer" =~ ^[Yy]$ ]] && echo "True" || echo "False" )
+else
+    sing_enable="False"
+fi
+
+if [[ "$install_hys" =~ ^[Yy]$ ]]; then
+    print_info "Do you want to enable hysteria (y/n)"
+    read -r answer
+    hys_enable=$( [[ "$answer" =~ ^[Yy]$ ]] && echo "True" || echo "False" )
+else
+    hys_enable="False"
+fi
 
 # Defining env docker path
 ENV="/opt/marznode/$node_directory/.env"
