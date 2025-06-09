@@ -17,14 +17,14 @@ This script sets up nodes for the Marzneshin and Marzban panels.
 
 **Run the script as root:**
 
-For Marzneshin:
+For Marzneshin (replace `YOUR_GITHUB_USERNAME` with your actual username):
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/mikeesierrah/ez-node/main/marznode.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/ez-node/main/marznode.sh)
 ```
 
-For Marzban:
+For Marzban (replace `YOUR_GITHUB_USERNAME` with your actual username):
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/mikeesierrah/ez-node/main/marzban-node.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/ez-node/main/marzban-node.sh)
 ```
 
 ## Directory Structure
