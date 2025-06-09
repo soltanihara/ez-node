@@ -72,6 +72,59 @@ hys_architecture() {
     esac
 }
 
+# Update Xray core for an existing node
+update_xray() {
+    print_info "Enter the node directory name:" && read -r node_directory
+    if [ ! -d "/opt/marznode/$node_directory/xray" ]; then
+        print_error "Node directory not found: /opt/marznode/$node_directory"
+        return 1
+    fi
+    print_info "Which version of Xray-core do you want? (e.g., 1.8.24) (leave blank for latest): "
+    read -r version
+    version=${version:-latest}
+    arch=$(x_architecture)
+    cd "/opt/marznode/$node_directory/xray" || return 1
+    if [[ $version == "latest" ]]; then
+        wget -O xray.zip "https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-$arch.zip"
+    else
+        wget -O xray.zip "https://github.com/XTLS/Xray-core/releases/download/v$version/Xray-linux-$arch.zip"
+    fi
+    if unzip -o xray.zip; then
+        rm xray.zip
+        mv -v xray "$node_directory-core"
+        print_success "Xray core updated to $version"
+        docker compose -f "/opt/marznode/$node_directory/docker-compose.yml" restart -t 0
+    else
+        print_error "Failed to update Xray core."
+    fi
+}
+
+# Remove an existing node completely
+remove_node() {
+    print_info "Enter the node directory name to remove:" && read -r node_directory
+    if [ -d "/opt/marznode/$node_directory" ]; then
+        docker compose -f "/opt/marznode/$node_directory/docker-compose.yml" down -t 0
+        rm -rf "/opt/marznode/$node_directory"
+        print_success "Node $node_directory removed."
+    else
+        print_error "Directory not found: /opt/marznode/$node_directory"
+    fi
+}
+
+# Select desired action
+print_info "Select an action:" && \
+echo "1) Install new node" && \
+echo "2) Update/downgrade Xray version of an existing node" && \
+echo "3) Remove a node" && \
+read -rp "Enter choice [1-3]: " action
+
+case "$action" in
+    1) print_info "Proceeding with new node installation." ;;
+    2) update_xray; exit ;;
+    3) remove_node; exit ;;
+    *) print_error "Invalid choice"; exit 1 ;;
+esac
+
 # Installing necessary packages
 print_info "Installing necessary packages..."
 print_info "DON'T PANIC IF IT LOOKS STUCK!"
