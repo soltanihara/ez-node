@@ -153,7 +153,7 @@ hversion=${hversion#app/v}
 arch=$(x_architecture)
 cd "/opt/marznode/$node_directory/xray"
 
-wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/xray.json"
+wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/main/etc/xray.json"
 
 print_info "Fetching Xray core version $xversion..."
 
@@ -175,7 +175,7 @@ print_success "Success! xray installed"
 
 # bulding sing-box
 cd /opt/marznode/$node_directory/sing-box
-wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/sing-box.json"
+wget -O config.json "https://raw.githubusercontent.com/mikeesierrah/ez-node/main/etc/sing-box.json"
 echo $sversion
 wget -O sing.zip "https://github.com/SagerNet/sing-box/archive/refs/tags/v${sversion#v}.zip"
 unzip sing.zip
@@ -192,7 +192,7 @@ print_success "Success! sing-box installed"
 
 # Fetching hysteria core and setting it up
 cd /opt/marznode/$node_directory/hysteria
-wget -O config.yaml "https://raw.githubusercontent.com/mikeesierrah/ez-node/refs/heads/main/etc/hysteria.yaml"
+wget -O config.yaml "https://raw.githubusercontent.com/mikeesierrah/ez-node/main/etc/hysteria.yaml"
 arch=$(hys_architecture)
 wget -O $node_directory-teria "https://github.com/apernet/hysteria/releases/download/app/v$hversion/hysteria-linux-$arch"
 chmod +x ./$node_directory-teria
@@ -218,15 +218,15 @@ DOCKER="/opt/marznode/$node_directory/docker-compose.yml"
 cat << EOF > "$ENV"
 SERVICE_ADDRESS=0.0.0.0
 SERVICE_PORT=$service
-#INSECURE=False
+INSECURE=True
 
 XRAY_ENABLED=$x_enable
 XRAY_EXECUTABLE_PATH=/opt/marznode/$node_directory/xray/$node_directory-core
 XRAY_ASSETS_PATH=/opt/marznode/$node_directory/xray
 XRAY_CONFIG_PATH=/opt/marznode/$node_directory/xray/config.json
 #XRAY_VLESS_REALITY_FLOW=xtls-rprx-vision
-#XRAY_RESTART_ON_FAILURE=True
-#XRAY_RESTART_ON_FAILURE_INTERVAL=5
+XRAY_RESTART_ON_FAILURE=True
+XRAY_RESTART_ON_FAILURE_INTERVAL=0
 
 HYSTERIA_ENABLED=$hys_enable
 HYSTERIA_EXECUTABLE_PATH=/opt/marznode/$node_directory/hysteria/$node_directory-teria
