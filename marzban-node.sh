@@ -162,8 +162,8 @@ DOCKER="/opt/marzban-node/$panel/docker-compose.yml"
 cat << EOF > "$ENV"
 SERVICE_PORT=$service
 XRAY_API_PORT=$api
-SSL_CERT_FILE = /opt/marzban-node/$panel/ssl_cert.pem
-SSL_KEY_FILE = /opt/marzban-node/$panel/ssl_key.pem
+SSL_CERT_FILE=/opt/marzban-node/$panel/ssl_cert.pem
+SSL_KEY_FILE=/opt/marzban-node/$panel/ssl_key.pem
 XRAY_EXECUTABLE_PATH=/opt/marzban-node/$panel/$panel-core
 SSL_CLIENT_CERT_FILE=/opt/marzban-node/$panel/$panel.pem
 SERVICE_PROTOCOL=rest
