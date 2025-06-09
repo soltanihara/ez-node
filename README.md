@@ -19,12 +19,12 @@ This script sets up nodes for the Marzneshin and Marzban panels.
 
 For Marzneshin:
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/mikeesierrah/ez-node/main/marznode.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/soltanihara/ez-node/main/marznode.sh)
 ```
 
 For Marzban:
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/mikeesierrah/ez-node/main/marzban-node.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/soltanihara/ez-node/main/marzban-node.sh)
 ```
 
 ## Directory Structure
