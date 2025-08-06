@@ -271,7 +271,7 @@ DOCKER="/opt/marznode/$node_directory/docker-compose.yml"
 cat << EOF > "$ENV"
 SERVICE_ADDRESS=0.0.0.0
 SERVICE_PORT=$service
-INSECURE=True
+#INSECURE=True
 
 XRAY_ENABLED=$x_enable
 XRAY_EXECUTABLE_PATH=/opt/marznode/$node_directory/xray/$node_directory-core
